@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_electronic_components/models/product.dart';
-import 'package:flutter_web_electronic_components/pages/detail/detail_page.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_image.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_text.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class ItemCard extends StatelessWidget {
@@ -35,18 +33,15 @@ class ItemCard extends StatelessWidget {
             image: product.image!,
             height: height / 2,
             width: width,
-            onTap: () => Get.to(() => DetailPage(product: product)),
           ),
-          InkWell(
-            onTap: () => Get.to(() => DetailPage(product: product)),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: CustomText(
-                text: product.name,
-                size: 16,
-                weight: FontWeight.bold,
-                maxLines: 2,
-              ),
+          // Container(width: 100, height: 100, color: Colors.blue),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: CustomText(
+              text: product.name,
+              size: 16,
+              weight: FontWeight.bold,
+              maxLines: 2,
             ),
           ),
           Padding(

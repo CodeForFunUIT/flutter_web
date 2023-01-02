@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_web_electronic_components/constants/controllers.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_text.dart';
 
 class UpDownButton extends StatefulWidget {
@@ -18,6 +19,7 @@ class _UpDownButtonState extends State<UpDownButton> {
   @override
   void initState() {
     super.initState();
+    cartController.number = 1;
     number = 1;
     _callBack = widget.callBack;
   }

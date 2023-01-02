@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_electronic_components/constants/color.dart';
 import 'package:flutter_web_electronic_components/constants/controllers.dart';
+import 'package:flutter_web_electronic_components/controllers/navigator_controller.dart';
 import 'package:flutter_web_electronic_components/models/user.dart';
 import 'package:flutter_web_electronic_components/pages/auth/radio_button.dart';
 import 'package:flutter_web_electronic_components/widgets/app_bar.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_text.dart';
 import 'package:flutter_web_electronic_components/widgets/footer.dart';
 import 'package:flutter_web_electronic_components/widgets/loading.dart';
+import 'package:get/get.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -219,7 +221,12 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                     const SizedBox(width: 24),
-                    CustomText(text: 'Đăng nhập', color: blue),
+                    InkWell(
+                      onTap: () {
+                        Get.toNamed(loginPage);
+                      },
+                      child: CustomText(text: 'Đăng nhập', color: blue),
+                    ),
                   ],
                 )
               ],

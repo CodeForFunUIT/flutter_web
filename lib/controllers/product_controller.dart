@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_web_electronic_components/models/banner.dart';
+import 'package:flutter_web_electronic_components/models/product_detail.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,11 +19,34 @@ class ProductController extends GetxController {
     update();
   }
 
+  List<Product> _cpus = [];
+  List<Product> get cpus => _cpus;
+  set cpus(List<Product> data) {
+    _cpus.clear();
+    _cpus = [...data];
+    update();
+  }
+
+  List<Product> _laptops = [];
+  List<Product> get laptops => _laptops;
+  set laptops(List<Product> data) {
+    _laptops.clear();
+    _laptops = [...data];
+    update();
+  }
+
   List<Banner> _banners = [];
   List<Banner> get banners => _banners;
   set banners(List<Banner> data) {
     _banners.clear();
     _banners = [...data];
+    update();
+  }
+
+  ProductDetail? _detail;
+  ProductDetail? get detail => _detail;
+  set detail(ProductDetail? data) {
+    _detail = data;
     update();
   }
 
@@ -39,11 +63,25 @@ class ProductController extends GetxController {
       );
 
       if (res.statusCode == 200) {
-        products = (jsonDecode(res.body) as List)
-            .map(
-              (item) => Product.fromJson(item),
-            )
-            .toList();
+        switch (idProductType) {
+          case '1':
+            cpus = (jsonDecode(res.body) as List)
+                .map(
+                  (item) => Product.fromJson(item),
+                )
+                .toList();
+            break;
+          case '2':
+            products = (jsonDecode(res.body) as List)
+                .map(
+                  (item) => Product.fromJson(item),
+                )
+                .toList();
+            break;
+          case '3':
+            break;
+          default:
+        }
       } else {}
     } catch (e) {
       printError(info: e.toString());
@@ -68,10 +106,10 @@ class ProductController extends GetxController {
     }
   }
 
-  Future<void> getDetailProduct(int idProductType) async {
+  Future<void> getDetailProduct(String idProduct) async {
     try {
       final body = jsonEncode({
-        "idProductType": idProductType,
+        "idProduct": idProduct,
       });
 
       http.Response res = await http.post(
@@ -80,12 +118,10 @@ class ProductController extends GetxController {
       );
 
       if (res.statusCode == 200) {
-        products = (res.body as List)
-            .map(
-              (item) => Product.fromJson(item),
-            )
-            .toList();
-      } else {}
+        detail = ProductDetail.fromJson(jsonDecode(res.body));
+      } else {
+        print('err');
+      }
     } catch (err) {
       printError(info: err.toString());
     }

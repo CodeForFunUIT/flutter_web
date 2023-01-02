@@ -26,14 +26,19 @@ class AuthController extends GetxController {
       );
 
       if (res.statusCode == 200) {
-        user = jsonDecode(res.body) as User;
-        // Get.offAll(page)
+        user = User.fromJson(jsonDecode(res.body));
       } else {
         print('email exist');
       }
     } catch (e) {
       printError(info: e.toString());
     }
+  }
+
+  void logout({String? email, String? password}) async {
+    _user = null;
+
+    update();
   }
 
   Future<void> register({User? user}) async {

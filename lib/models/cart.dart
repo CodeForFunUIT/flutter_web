@@ -36,4 +36,42 @@ class CartDetail {
         "price": price,
         "image": image,
       };
+
+  Map<String, dynamic> toOrderJson({required String idUser}) => {
+        "idUser": int.parse(idUser),
+        "idProduct": int.parse(idProduct!),
+        "number": int.parse(number!),
+        "name": name,
+        "price": int.parse(price!),
+        "date":
+            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}"
+      };
+  factory CartDetail.copyWith(CartDetail? cartDetail) => CartDetail(
+        id: cartDetail?.id,
+        idUser: cartDetail?.idUser,
+        idProduct: cartDetail?.idProduct,
+        number: cartDetail?.number,
+        name: cartDetail?.name,
+        price: cartDetail?.price,
+        image: cartDetail?.image,
+      );
+
+  // factory CartDetail.apply({
+  //   String? id,
+  //   String? idUser,
+  //   String? idProduct,
+  //   String? number,
+  //   String? name,
+  //   String? price,
+  //   String? image,
+  // }) =>
+  //     CartDetail(
+  //       id: id,
+  //       idUser: idUser,
+  //       idProduct: idProduct,
+  //       number: number,
+  //       name: name,
+  //       price: price,
+  //       image: image,
+  //     );
 }

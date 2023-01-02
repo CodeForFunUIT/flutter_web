@@ -1,10 +1,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_image.dart';
-import 'package:image_network/image_network.dart';
 
-class ImageSlider extends StatelessWidget {
-  ImageSlider({
+class ImageSlider extends StatefulWidget {
+  const ImageSlider({
     super.key,
     required this.images,
     required this.height,
@@ -13,8 +12,7 @@ class ImageSlider extends StatelessWidget {
     this.runSpacing = 30,
     this.clipBehavior = Clip.none,
     this.borderRadius,
-    this.indicatorSelectColor = Colors.white,
-    this.indicatorNonSelectColor = Colors.white,
+    this.indicatorColor = Colors.white,
     this.padding,
     this.empty,
     this.enlargeCenterPage = false,
@@ -29,9 +27,7 @@ class ImageSlider extends StatelessWidget {
 
   final double height;
 
-  final Color? indicatorSelectColor;
-
-  final Color? indicatorNonSelectColor;
+  final Color? indicatorColor;
 
   final EdgeInsets? padding;
 
@@ -41,56 +37,66 @@ class ImageSlider extends StatelessWidget {
 
   final Function(int index, CarouselPageChangedReason reason)? onPageChanged;
 
-  final CarouselController controller = CarouselController();
-
-  final GlobalKey<IndicatorState> _childKey = GlobalKey<IndicatorState>();
-
   final int initIndex;
 
   final void Function(int index)? onTap;
 
   final bool enlargeCenterPage;
 
-  IndicatorState? get indicator => _childKey.currentState;
+  @override
+  State<ImageSlider> createState() => _ImageSliderState();
+}
+
+class _ImageSliderState extends State<ImageSlider> {
+  final CarouselController controller = CarouselController();
+
+  final GlobalKey<IndicatorState> _childKey = GlobalKey<IndicatorState>();
+
+  IndicatorState? indicator;
+
+  @override
+  void initState() {
+    super.initState();
+    indicator = _childKey.currentState;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         _carouselSlider(context),
-        // Positioned.fill(
-        //   child: Align(
-        //     alignment: Alignment.bottomCenter,
-        //     child: Padding(
-        //       padding: padding ?? const EdgeInsets.only(bottom: 20),
-        //       child: Indicator(
-        //         key: _childKey,
-        //         controller: controller,
-        //         itemCount: images.length,
-        //         initIndex: initIndex,
-        //         indicatorNonSelectColor: indicatorNonSelectColor,
-        //         indicatorSelectColor: indicatorSelectColor,
-        //       ),
-        //     ),
-        //   ),
-        // ),
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: widget.padding ?? const EdgeInsets.only(bottom: 20),
+              child: Indicator(
+                key: _childKey,
+                controller: controller,
+                itemCount: widget.images.length,
+                initIndex: widget.initIndex,
+                indicatorColor: widget.indicatorColor,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
 
   Widget _carouselSlider(BuildContext context) {
     return SizedBox(
-      height: height,
+      height: widget.height,
       width: MediaQuery.of(context).size.width,
       child: LayoutBuilder(
         builder: (_, constraint) {
           return Container(
             decoration: BoxDecoration(
-              borderRadius: borderRadius ?? BorderRadius.circular(20),
+              borderRadius: widget.borderRadius ?? BorderRadius.circular(20),
             ),
             child: CarouselSlider.builder(
               options: CarouselOptions(
-                clipBehavior: clipBehavior,
+                clipBehavior: widget.clipBehavior,
                 aspectRatio: (constraint.maxWidth) / constraint.maxHeight,
                 viewportFraction: 1,
                 initialPage: 0,
@@ -100,28 +106,28 @@ class ImageSlider extends StatelessWidget {
                 autoPlayInterval: const Duration(seconds: 8),
                 autoPlayAnimationDuration: const Duration(milliseconds: 800),
                 autoPlayCurve: Curves.fastOutSlowIn,
-                enlargeCenterPage: enlargeCenterPage,
+                enlargeCenterPage: widget.enlargeCenterPage,
                 onPageChanged: (index, reason) {
-                  onPageChanged?.call(index, reason);
+                  widget.onPageChanged?.call(index, reason);
                   indicator?.change(index);
                 },
                 scrollDirection: Axis.horizontal,
               ),
               carouselController: controller,
-              itemCount: images.length,
+              itemCount: widget.images.length,
               itemBuilder: (_, index, __) => ClipRRect(
-                borderRadius: borderRadius ?? BorderRadius.circular(12),
-                child: images.isEmpty
-                    ? empty
+                borderRadius: widget.borderRadius ?? BorderRadius.circular(12),
+                child: widget.images.isEmpty
+                    ? widget.empty
                     : InkWell(
-                        onTap: onTap != null
+                        onTap: widget.onTap != null
                             ? () {
-                                onTap!.call(index);
+                                widget.onTap!.call(index);
                               }
                             : null,
                         child: CustomImage(
-                          image: images[index],
-                          fitWeb: BoxFitWeb.contain,
+                          image: widget.images[index],
+                          fitWeb: BoxFit.contain,
                           height: constraint.maxHeight,
                           width: constraint.maxWidth,
                         ),
@@ -140,34 +146,37 @@ class Indicator extends StatefulWidget {
     super.key,
     required this.itemCount,
     required this.controller,
-    this.indicatorNonSelectColor,
-    this.indicatorSelectColor,
+    this.indicatorColor,
     this.initIndex = 0,
   });
 
   final CarouselController controller;
   final int itemCount;
   final int initIndex;
-  final Color? indicatorSelectColor;
-  final Color? indicatorNonSelectColor;
+  final Color? indicatorColor;
 
   @override
   State<Indicator> createState() => IndicatorState();
 }
 
 class IndicatorState extends State<Indicator> {
-  CarouselController get controller => widget.controller;
+  late CarouselController controller;
   int get itemCount => widget.itemCount;
   late int _select;
-  late Color _indicatorSelectColor;
-  late Color _indicatorNonSelectColor;
+  late Color _indicatorColor;
 
   @override
   void initState() {
     super.initState();
+    controller = widget.controller;
     _select = widget.initIndex;
-    _indicatorNonSelectColor = widget.indicatorNonSelectColor!;
-    _indicatorSelectColor = widget.indicatorSelectColor!;
+    _indicatorColor = widget.indicatorColor!;
+  }
+
+  @override
+  void dispose() {
+    controller.stopAutoPlay();
+    super.dispose();
   }
 
   @override
@@ -193,7 +202,7 @@ class IndicatorState extends State<Indicator> {
         height: 8,
         width: isSelect ? 32 : 8,
         decoration: BoxDecoration(
-          color: isSelect ? _indicatorSelectColor : _indicatorNonSelectColor,
+          color: _indicatorColor,
           borderRadius: BorderRadius.circular(10),
         ),
       ),

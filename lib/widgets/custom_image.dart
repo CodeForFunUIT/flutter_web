@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_web_electronic_components/constants/color.dart';
-import 'package:image_network/image_network.dart';
-import 'package:shimmer/shimmer.dart';
 
 class CustomImage extends StatelessWidget {
   final String image;
   final double height;
   final double width;
-  final BoxFitWeb fitWeb;
+  final BoxFit fitWeb;
   final Function? onTap;
   const CustomImage({
     super.key,
@@ -15,22 +12,28 @@ class CustomImage extends StatelessWidget {
     required this.height,
     required this.width,
     this.onTap,
-    this.fitWeb = BoxFitWeb.cover,
+    this.fitWeb = BoxFit.fitWidth,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ImageNetwork(
-      image: image,
+    return Image.network(
       height: height,
       width: width,
-      fitWeb: fitWeb,
-      onTap: onTap,
-      onLoading: Shimmer.fromColors(
-        baseColor: baseShimmerColor,
-        highlightColor: highlightShimmerColor,
-        child: SizedBox(height: height, width: width),
-      ),
+      image,
+      fit: fitWeb,
     );
+    //   ImageNetwork(
+    //     image: image,
+    //     height: height,
+    //     width: width,
+    //     fitWeb: fitWeb,
+    //     onTap: onTap,
+    //     onLoading: Shimmer.fromColors(
+    //       baseColor: baseShimmerColor,
+    //       highlightColor: highlightShimmerColor,
+    //       child: SizedBox(height: height, width: width),
+    //     ),
+    //   );
   }
 }

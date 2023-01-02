@@ -6,9 +6,12 @@ import 'package:flutter_web_electronic_components/controllers/navigator_controll
 import 'package:flutter_web_electronic_components/controllers/product_controller.dart';
 import 'package:flutter_web_electronic_components/layout.dart';
 import 'package:flutter_web_electronic_components/pages/404/page_not_found.dart';
+import 'package:flutter_web_electronic_components/pages/account/my_order.dart';
 import 'package:flutter_web_electronic_components/pages/auth/login.dart';
 import 'package:flutter_web_electronic_components/pages/auth/register.dart';
+import 'package:flutter_web_electronic_components/pages/cart/cart_page.dart';
 import 'package:flutter_web_electronic_components/pages/detail/detail_page_dev.dart';
+import 'package:flutter_web_electronic_components/pages/orders/payment_method_page.dart';
 
 import 'package:get/get.dart';
 
@@ -27,7 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      initialRoute: registerPage,
+      initialRoute: rootRoute,
       unknownRoute: GetPage(
         name: '/not-found',
         page: () => const PageNotFound(),
@@ -37,7 +40,7 @@ class MyApp extends StatelessWidget {
         GetPage(
           name: rootRoute,
           page: () {
-            return SiteLayout();
+            return const SiteLayout();
           },
         ),
         GetPage(
@@ -52,6 +55,26 @@ class MyApp extends StatelessWidget {
           name: registerPage,
           page: () => const Register(),
         ),
+        GetPage(
+          name: cartPage,
+          page: () => const CartPage(),
+        ),
+        GetPage(
+          // parameters: ,
+          name: paymentPage,
+          page: () => const PaymentMethodPage(),
+        ),
+        GetPage(
+          name: orderPage,
+          page: () => const MyOrder(),
+        ),
+        // GetPage(
+        //   name: allProductScreen,
+        //   page: () => const AllProductScreen(
+        //     title: headline6,
+        //     idProductType: idProductType,
+        //   ),
+        // )
       ],
       // onGenerateRoute: ,
       debugShowCheckedModeBanner: false,
@@ -64,7 +87,7 @@ class MyApp extends StatelessWidget {
         //     .apply(bodyColor: Colors.black),
         primaryColor: Colors.blue,
       ),
-      home: SiteLayout(),
+      home: const SiteLayout(),
     );
   }
 }

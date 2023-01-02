@@ -80,4 +80,24 @@ class ProductDetail {
         "chuanRam": chuanRam,
         "bus": bus,
       };
+
+  factory ProductDetail.copyWith(ProductDetail? detail) => ProductDetail(
+        id: detail?.id,
+        soNhan: detail?.soNhan,
+        soLuong: detail?.soLuong,
+        xungNhipCoBan: detail?.xungNhipCoBan,
+        xungNhipToiDa: detail?.xungNhipToiDa,
+        theHe: detail?.theHe,
+        doHoa: detail?.doHoa,
+        tienTrinh: detail?.tienTrinh,
+        ram: detail?.ram,
+        chuanRam: detail?.chuanRam,
+        bus: detail?.bus,
+        ramDetai: detail?.ramDetai,
+        oCung: detail?.oCung,
+        manHinh: detail?.manHinh,
+        trongLuong: detail?.trongLuong,
+        idProduct: detail?.idProduct,
+        cpu: detail?.cpu,
+      );
 }

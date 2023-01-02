@@ -5,8 +5,8 @@ Color lightGrey = const Color(0xFFA4A6B3);
 Color dark = const Color(0xFF363740);
 Color active = const Color(0xFF3C19C0);
 Color blue = const Color(0xFF1c55ff);
-Color baseShimmerColor = neutral.shade300;
-Color highlightShimmerColor = neutral.shade200;
+Color baseShimmerColor = neutral.shade900;
+Color highlightShimmerColor = neutral.shade300;
 
 /// Follow design
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_electronic_components/constants/color.dart';
 import 'package:flutter_web_electronic_components/models/product.dart';
+import 'package:flutter_web_electronic_components/pages/detail/detail_page.dart';
+import 'package:flutter_web_electronic_components/pages/home/all_product.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_text.dart';
 import 'package:flutter_web_electronic_components/widgets/item_card.dart';
+import 'package:get/get.dart';
 
 class GridProduct extends StatelessWidget {
   final List<Product> products;
@@ -10,6 +13,7 @@ class GridProduct extends StatelessWidget {
   final double height;
   final double runSpacing;
   final String titleText;
+  final String idProductType;
   const GridProduct({
     super.key,
     required this.products,
@@ -17,6 +21,7 @@ class GridProduct extends StatelessWidget {
     required this.height,
     required this.titleText,
     this.runSpacing = 16,
+    required this.idProductType,
   });
 
   @override
@@ -68,30 +73,38 @@ class GridProduct extends StatelessWidget {
           : products.length > 10
               ? 5
               : products.length - start,
-      (index) => ItemCard(
-        height: height,
-        width: widthItem,
-        product: products[index + start],
+      (index) => InkWell(
+        onTap: () => Get.to(() => DetailPage(product: products[index + start])),
+        child: ItemCard(
+          height: height,
+          width: widthItem,
+          product: products[index + start],
+        ),
       ),
     );
   }
 
   Widget title(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
-        color: blue,
+    return InkWell(
+      onTap: () => Get.to(
+        AllProductScreen(title: titleText, idProductType: idProductType),
       ),
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-          horizontal: MediaQuery.of(context).size.width * 0.3,
-          vertical: 16,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24),
+          color: blue,
         ),
-        child: CustomText(
-          text: titleText,
-          size: 16,
-          weight: FontWeight.bold,
-          color: Colors.white,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: MediaQuery.of(context).size.width * 0.3,
+            vertical: 16,
+          ),
+          child: CustomText(
+            text: titleText,
+            size: 16,
+            weight: FontWeight.bold,
+            color: Colors.white,
+          ),
         ),
       ),
     );

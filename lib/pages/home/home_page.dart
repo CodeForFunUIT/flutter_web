@@ -29,8 +29,29 @@ class HomePage extends StatelessWidget {
                   widthItem: MediaQuery.of(context).size.width * 0.15,
                   height: MediaQuery.of(context).size.height * 0.4,
                   titleText: 'Ram',
+                  idProductType: '2',
                 ),
-        )
+        ),
+        const SizedBox(height: 24),
+        GetBuilder<ProductController>(
+          initState: (_) => productController.getProduct(idProductType: '1'),
+          builder: (controller) => controller.cpus.isEmpty
+              ? Shimmer.fromColors(
+                  baseColor: baseShimmerColor,
+                  highlightColor: highlightShimmerColor,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                  ),
+                )
+              : GridProduct(
+                  products: controller.cpus,
+                  widthItem: MediaQuery.of(context).size.width * 0.15,
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  titleText: 'CPU',
+                  idProductType: '1',
+                ),
+        ),
       ],
     );
   }
