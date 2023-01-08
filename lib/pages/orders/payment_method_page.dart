@@ -45,132 +45,131 @@ class PaymentMethodPage extends StatelessWidget {
                 border: Border.all(color: Colors.grey),
               ),
               padding: const EdgeInsets.only(top: 24),
-              child: Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(width: 24),
-                        InkWell(
-                          onTap: () {
-                            Get.dialog(
-                              Dialog(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(24.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const CustomText(
-                                        text: 'Chưa hỗ trợ chức năng này',
-                                        weight: FontWeight.bold,
-                                      ),
-                                      const SizedBox(height: 24),
-                                      const CustomText(
-                                        text:
-                                            'Quý khách vui lòng chọn phương thức thanh toán khác',
-                                      ),
-                                      const SizedBox(height: 24),
-                                      ElevatedButton(
-                                        onPressed: () => Get.back(),
-                                        child: const Padding(
-                                          padding: EdgeInsets.all(8.0),
-                                          child: CustomText(
-                                            text: 'Xác nhận',
-                                            color: Colors.white,
-                                          ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(width: 24),
+                      InkWell(
+                        onTap: () {
+                          Get.dialog(
+                            Dialog(
+                              child: Padding(
+                                padding: const EdgeInsets.all(24.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const CustomText(
+                                      text: 'Chưa hỗ trợ chức năng này',
+                                      weight: FontWeight.bold,
+                                    ),
+                                    const SizedBox(height: 24),
+                                    const CustomText(
+                                      text:
+                                          'Quý khách vui lòng chọn phương thức thanh toán khác',
+                                    ),
+                                    const SizedBox(height: 24),
+                                    ElevatedButton(
+                                      onPressed: () => Get.back(),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(8.0),
+                                        child: CustomText(
+                                          text: 'Xác nhận',
+                                          color: Colors.white,
                                         ),
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    )
+                                  ],
                                 ),
                               ),
-                            );
-                          },
-                          child: Container(
-                            width: 20,
-                            height: 20,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.grey),
                             ),
-                          ),
-                        ),
-                        const SizedBox(width: 24),
-                        const Icon(Icons.account_balance),
-                        const SizedBox(width: 8),
-                        const CustomText(text: 'Chuyển khoản qua ngân hàng'),
-                      ],
-                    ),
-                    const Divider(height: 48),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const SizedBox(width: 24),
-                        Container(
+                          );
+                        },
+                        child: Container(
                           width: 20,
                           height: 20,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.blue,
                             border: Border.all(color: Colors.grey),
                           ),
                         ),
-                        const SizedBox(width: 24),
-                        const Icon(Icons.account_balance_wallet),
-                        const SizedBox(width: 8),
-                        const CustomText(text: 'Thanh toán tại cửa hàng'),
+                      ),
+                      const SizedBox(width: 24),
+                      const Icon(Icons.account_balance),
+                      const SizedBox(width: 8),
+                      const CustomText(text: 'Chuyển khoản qua ngân hàng'),
+                    ],
+                  ),
+                  const Divider(height: 48),
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(width: 24),
+                      Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blue,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                      ),
+                      const SizedBox(width: 24),
+                      const Icon(Icons.account_balance_wallet),
+                      const SizedBox(width: 8),
+                      const CustomText(text: 'Thanh toán tại cửa hàng'),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  const Divider(height: 1),
+                  Container(
+                    color: Colors.grey[100],
+                    padding: const EdgeInsets.only(top: 50.0, bottom: 24),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: const [
+                        CustomText(
+                          textAlign: TextAlign.center,
+                          text:
+                              'Quý khách vui lòng đến 1 trong 4 địa chỉ sau để thanh toán trực tiếp tại cửa hàng:',
+                          color: Colors.grey,
+                          size: 14,
+                        ),
+                        CustomText(
+                          textAlign: TextAlign.center,
+                          text:
+                              '396-398 Nguyễn Kiệm, P. 3, Q. Phú Nhuận, TP. HCM',
+                          color: Colors.grey,
+                          size: 14,
+                        ),
+                        CustomText(
+                          textAlign: TextAlign.center,
+                          text:
+                              '55 Chu Mạnh Trinh, P. Bình Thọ, Q. Thủ Đức, TP. HCM',
+                          color: Colors.grey,
+                          size: 14,
+                        ),
+                        CustomText(
+                          textAlign: TextAlign.center,
+                          text:
+                              '41 Đường Số 6, Khu Bắc Đinh Bộ Lĩnh, P. 26, Quận Bình Thạnh, TP. HCM',
+                          color: Colors.grey,
+                          size: 14,
+                        ),
+                        CustomText(
+                          textAlign: TextAlign.center,
+                          text:
+                              '204 Nguyễn Văn Tuyết, Trung Liệt, Đống Đa, Hà Nội',
+                          color: Colors.grey,
+                          size: 14,
+                        )
                       ],
                     ),
-                    const SizedBox(height: 24),
-                    const Divider(height: 1),
-                    Container(
-                      color: Colors.grey[100],
-                      width: double.infinity,
-                      padding: const EdgeInsets.only(
-                        top: 50.0,
-                        bottom: 24,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: const [
-                          CustomText(
-                            text:
-                                'Quý khách vui lòng đến 1 trong 4 địa chỉ sau để thanh toán trực tiếp tại cửa hàng:',
-                            color: Colors.grey,
-                            size: 14,
-                          ),
-                          CustomText(
-                            text:
-                                '396-398 Nguyễn Kiệm, P. 3, Q. Phú Nhuận, TP. HCM',
-                            color: Colors.grey,
-                            size: 14,
-                          ),
-                          CustomText(
-                            text:
-                                '55 Chu Mạnh Trinh, P. Bình Thọ, Q. Thủ Đức, TP. HCM',
-                            color: Colors.grey,
-                            size: 14,
-                          ),
-                          CustomText(
-                            text:
-                                '41 Đường Số 6, Khu Bắc Đinh Bộ Lĩnh, P. 26, Quận Bình Thạnh, TP. HCM',
-                            color: Colors.grey,
-                            size: 14,
-                          ),
-                          CustomText(
-                            text:
-                                '204 Nguyễn Văn Tuyết, Trung Liệt, Đống Đa, Hà Nội',
-                            color: Colors.grey,
-                            size: 14,
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 24),
@@ -183,9 +182,7 @@ class PaymentMethodPage extends StatelessWidget {
                   },
                   style:
                       TextButton.styleFrom(foregroundColor: Colors.transparent),
-                  child: const CustomText(
-                    text: 'Giỏ hàng',
-                  ),
+                  child: const CustomText(text: 'Giỏ hàng'),
                 ),
                 const Spacer(),
                 ElevatedButton(

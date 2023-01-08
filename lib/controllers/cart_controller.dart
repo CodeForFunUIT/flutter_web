@@ -140,8 +140,8 @@ class CartController extends GetxController {
     await prefs.clear();
   }
 
-  Future<void> sumPrice() async {
-    getCart();
+  void sumPrice() {
+    // getCart();
     sum = carts.fold<double>(
       0,
       (pre, e) => pre + double.parse(e!.price!) * int.parse(e.number!),

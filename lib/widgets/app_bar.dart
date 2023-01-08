@@ -20,8 +20,6 @@ class CustomAppBar extends AppBar {
   });
 }
 
-const List<String> list = <String>['One', 'Two', 'Three', 'Four'];
-
 class TitleAppBar extends StatelessWidget {
   const TitleAppBar({super.key});
 

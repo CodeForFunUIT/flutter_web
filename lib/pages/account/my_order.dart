@@ -32,7 +32,8 @@ class MyOrder extends StatelessWidget {
             const SizedBox(height: 48),
             Padding(
               padding: EdgeInsets.symmetric(
-                  horizontal: MediaQuery.of(context).size.width * 0.2),
+                horizontal: MediaQuery.of(context).size.width * 0.2,
+              ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -110,12 +111,14 @@ class MyOrder extends StatelessWidget {
             const Divider(height: 24),
             CustomText(
               text:
-                  '${authController.user!.firstName} ${authController.user!.firstName}',
+                  '${authController.user!.firstName} ${authController.user!.lastName}',
             ),
             const SizedBox(height: 8),
             CustomText(text: authController.user!.email),
             const SizedBox(height: 8),
             CustomText(text: authController.user!.dateOfBirth),
+            const SizedBox(height: 8),
+            CustomText(text: authController.user!.phone),
           ],
         ),
       ),

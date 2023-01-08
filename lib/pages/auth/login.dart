@@ -4,7 +4,6 @@ import 'package:flutter_web_electronic_components/constants/color.dart';
 import 'package:flutter_web_electronic_components/constants/controllers.dart';
 import 'package:flutter_web_electronic_components/controllers/navigator_controller.dart';
 import 'package:flutter_web_electronic_components/models/cart.dart';
-import 'package:flutter_web_electronic_components/pages/orders/payment_method_page.dart';
 import 'package:flutter_web_electronic_components/widgets/app_bar.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_dialog.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_text.dart';
@@ -56,9 +55,7 @@ class _LoginState extends State<Login> {
             Get.back();
             break;
           case FromWhere.fromBuyProduct:
-            Get.to(
-              const PaymentMethodPage(),
-            );
+            Get.toNamed(paymentPage);
             break;
           default:
         }

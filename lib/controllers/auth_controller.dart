@@ -42,15 +42,17 @@ class AuthController extends GetxController {
   }
 
   Future<void> register({User? user}) async {
-    final body = jsonEncode(user!.toJson());
+    final body = jsonEncode(user!.toJson(user));
+    print(body);
     try {
       http.Response res = await http.post(
-        Uri.parse(Domain.login),
+        Uri.parse(Domain.register),
         body: body,
       );
 
       if (res.statusCode == 200) {
-        user = jsonDecode(res.body) as User;
+        this.user = User.fromJson(jsonDecode(res.body));
+        print(this.user?.id);
       } else {
         print('email exist');
       }

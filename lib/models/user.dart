@@ -6,6 +6,7 @@ class User {
   String? email;
   String? password;
   String? dateOfBirth;
+  String? phone;
 
   User({
     this.id,
@@ -15,6 +16,7 @@ class User {
     this.email,
     this.password,
     this.dateOfBirth,
+    this.phone,
   });
 
   factory User.init() => User(
@@ -25,6 +27,7 @@ class User {
         email: '',
         password: '',
         dateOfBirth: '',
+        phone: '',
       );
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -35,6 +38,7 @@ class User {
         email: json['email'] ?? '',
         password: json['password'] ?? '',
         dateOfBirth: json['dateOfBirth'] ?? '',
+        phone: json['phone'] ?? '',
       );
 
   factory User.copyWith(User? user) => User(
@@ -45,15 +49,17 @@ class User {
         email: user?.email,
         password: user?.password,
         dateOfBirth: user?.dateOfBirth,
+        phone: user?.phone,
       );
 
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "firstName": firstName,
-        "lastName": lastName,
-        "sex": sex,
-        "email": email,
-        "password": password,
-        "dateOfBirth": dateOfBirth,
+  Map<String, dynamic> toJson(User user) => {
+        // "id": user.id,
+        "firstName": user.firstName,
+        "lastName": user.lastName,
+        "sex": user.sex ?? "male",
+        "email": user.email,
+        "password": user.password,
+        "dateOfBirth": user.dateOfBirth,
+        "phone": user.phone,
       };
 }

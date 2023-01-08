@@ -41,6 +41,7 @@ class DetailPage extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.6,
                   width: MediaQuery.of(context).size.width * 0.3,
                 ),
+                const SizedBox(width: 24),
                 Expanded(
                   child: GetBuilder<ProductController>(
                     initState: (_) => productController.getDetailProduct(
@@ -166,7 +167,7 @@ class Detail extends StatelessWidget {
         return inforCpuDetail();
       case 2:
         return inforRamDetail();
-      case 3:
+      case 6:
         return inforLaptopDetail();
       default:
         return const SizedBox.shrink();
@@ -504,11 +505,16 @@ class Detail extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         rowDetail('CPU', detail.cpu),
-        rowDetail('RAM', detail.ram),
+        rowDetail('RAM', detail.ramDetai),
         rowDetail('Ổ cứng', detail.oCung),
-        rowDetail('Card đồ họa', detail.doHoa),
-        rowDetail('Màn hình', detail.manHinh),
-        rowDetail('Hệ điều hành', 'Windows 10 pro', true),
+        rowDetail('Card đồ họa', detail.manHinh),
+        rowDetail('Màn hình', detail.trongLuong),
+        rowDetail('Hệ điều hành', 'Windows 10 pro'),
+        rowDetail('Đọc thẻ nhớ', 'None'),
+        rowDetail('Chuẩn Lan', 'None'),
+        rowDetail('Chuẩn Wifi', '802.11ax (2x2)'),
+        rowDetail('BlueTooth', 'v5.1'),
+        rowDetail('Kích thước', '322 x 207 x 14.9 mm', true),
       ],
     );
   }

@@ -107,6 +107,20 @@ class AllProductScreen extends StatelessWidget {
             ),
           ),
         );
+      case '6':
+        return List<Widget>.generate(
+          productController.laptops.length,
+          (index) => InkWell(
+            onTap: () => Get.to(
+              () => DetailPage(product: productController.laptops[index]),
+            ),
+            child: ItemCard(
+              width: MediaQuery.of(context).size.width * 0.15,
+              height: MediaQuery.of(context).size.height * 0.4,
+              product: productController.laptops[index],
+            ),
+          ),
+        );
       default:
         return const [];
     }

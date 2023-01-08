@@ -78,7 +78,12 @@ class ProductController extends GetxController {
                 )
                 .toList();
             break;
-          case '3':
+          case '6':
+          laptops = (jsonDecode(res.body) as List)
+                .map(
+                  (item) => Product.fromJson(item),
+                )
+                .toList();
             break;
           default:
         }

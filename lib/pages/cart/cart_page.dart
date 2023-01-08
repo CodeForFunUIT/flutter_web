@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_electronic_components/base/enum.dart';
 import 'package:flutter_web_electronic_components/constants/controllers.dart';
 import 'package:flutter_web_electronic_components/controllers/cart_controller.dart';
+import 'package:flutter_web_electronic_components/controllers/navigator_controller.dart';
 import 'package:flutter_web_electronic_components/pages/cart/item_cart.dart';
-import 'package:flutter_web_electronic_components/pages/orders/payment_method_page.dart';
 import 'package:flutter_web_electronic_components/widgets/app_bar.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_dialog.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_text.dart';
@@ -11,8 +11,21 @@ import 'package:flutter_web_electronic_components/widgets/footer.dart';
 import 'package:flutter_web_electronic_components/widgets/item_card.dart';
 import 'package:get/get.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      cartController.sumPrice();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +47,7 @@ class CartPage extends StatelessWidget {
                   const SizedBox(width: 24),
                   Expanded(
                     flex: 2,
-                    child: cartInfo(context),
+                    child: cartInfo(),
                   ),
                 ],
               ),
@@ -96,7 +109,7 @@ class CartPage extends StatelessWidget {
                 border: Border.all(color: Colors.grey),
               ),
               child: GetBuilder<CartController>(
-                initState: (_) async => await cartController.getCart(),
+                initState: (_) => cartController.getCart(),
                 builder: (controller) => controller.carts.isEmpty
                     ? const SizedBox.shrink()
                     : ListView.separated(
@@ -115,7 +128,7 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  Widget cartInfo(BuildContext context) {
+  Widget cartInfo() {
     return ColoredBox(
       color: Colors.white,
       child: Padding(
@@ -144,10 +157,12 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
                 GetBuilder<CartController>(
-                  initState: (_) => cartController.sumPrice(),
-                  builder: (controller) => CustomText(
-                    text: controller.sum.toVND(),
-                  ),
+                  // initState: (_) => cartController.sumPrice(),
+                  builder: (controller) {
+                    return CustomText(
+                      text: controller.sum.toVND(),
+                    );
+                  },
                 ),
               ],
             ),
@@ -172,9 +187,7 @@ class CartPage extends StatelessWidget {
                             const CustomDialog(type: DialogType.mustLogin),
                           );
                         } else {
-                          Get.to(
-                            const PaymentMethodPage(),
-                          );
+                          Get.toNamed(paymentPage);
                         }
                       }
                     },

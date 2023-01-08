@@ -23,6 +23,7 @@ class _RegisterState extends State<Register> {
   late TextEditingController dateOfBirth;
   late TextEditingController email;
   late TextEditingController password;
+  late TextEditingController sdt;
 
   final _formKey = GlobalKey<FormState>();
   // final _formKey = GlobalKey<FormState>();
@@ -44,6 +45,7 @@ class _RegisterState extends State<Register> {
     password = TextEditingController();
     email = TextEditingController();
     dateOfBirth = TextEditingController();
+    sdt = TextEditingController();
   }
 
   void disposeController() {
@@ -72,8 +74,16 @@ class _RegisterState extends State<Register> {
     final emailValid = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
     );
-    if (value != null || value!.isNotEmpty || !emailValid.hasMatch(value)) {
-      return 'email Không hợp lệ';
+    if (value == null || value.isEmpty || !emailValid.hasMatch(value)) {
+      return 'Email Không hợp lệ';
+    }
+    return null;
+  }
+
+  String? validatePhoneVietNam(String? value) {
+    final phoneValid = RegExp(r"(84|0[3|5|7|8|9])+([0-9]{8})\b");
+    if (value == null || value.isEmpty || !phoneValid.hasMatch(value)) {
+      return 'Số điện thoại Không hợp lệ';
     }
     return null;
   }
@@ -130,7 +140,7 @@ class _RegisterState extends State<Register> {
                     border: OutlineInputBorder(),
                     labelText: 'Họ',
                   ),
-                  validator: validateEmail,
+                  validator: validateEmpty,
                 ),
                 const SizedBox(height: 24),
                 TextFormField(
@@ -169,12 +179,7 @@ class _RegisterState extends State<Register> {
                     fillColor: Colors.grey,
                     border: OutlineInputBorder(),
                   ),
-                  validator: (value) {
-                    if (validateEmpty(value) != null) {
-                      return validateEmpty(value);
-                    }
-                    return validateEmail(value);
-                  },
+                  validator: validateEmail,
                 ),
                 const SizedBox(height: 24),
                 TextFormField(
@@ -186,6 +191,17 @@ class _RegisterState extends State<Register> {
                     border: OutlineInputBorder(),
                   ),
                   validator: validateEmpty,
+                ),
+                const SizedBox(height: 24),
+                TextFormField(
+                  controller: sdt,
+                  decoration: const InputDecoration(
+                    hintText: 'Nhập số điện thoại',
+                    labelText: 'Số điện thoại',
+                    fillColor: Colors.grey,
+                    border: OutlineInputBorder(),
+                  ),
+                  validator: validatePhoneVietNam,
                 ),
                 const SizedBox(height: 24),
                 Row(
@@ -204,14 +220,25 @@ class _RegisterState extends State<Register> {
                             firstName: firstName.text,
                             lastName: lastName.text,
                             email: email.text,
+                            sex: user.sex,
                             password: password.text,
                             dateOfBirth: dateOfBirth.text,
+                            phone: sdt.text,
                           );
                           Loading.startLoading(context);
-                          await authController.register(
-                            user: user,
-                          );
+                          await authController.register(user: user);
                           Loading.stopLoading();
+                          print(authController.user?.id);
+                          if (authController.user?.id == null) {
+                            Get.snackbar(
+                              'Đăng ký thất bại',
+                              'Email đã tồn tại',
+                              backgroundColor: Colors.red.withOpacity(.6),
+                              colorText: Colors.white,
+                            );
+                          } else {
+                            Get.toNamed(rootRoute);
+                          }
                         }
                       },
                       child: const CustomText(

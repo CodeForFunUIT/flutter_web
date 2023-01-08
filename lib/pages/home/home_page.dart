@@ -52,6 +52,26 @@ class HomePage extends StatelessWidget {
                   idProductType: '1',
                 ),
         ),
+        const SizedBox(height: 24),
+        GetBuilder<ProductController>(
+          initState: (_) => productController.getProduct(idProductType: '6'),
+          builder: (controller) => controller.laptops.isEmpty
+              ? Shimmer.fromColors(
+                  baseColor: baseShimmerColor,
+                  highlightColor: highlightShimmerColor,
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                  ),
+                )
+              : GridProduct(
+                  products: controller.laptops,
+                  widthItem: MediaQuery.of(context).size.width * 0.15,
+                  height: MediaQuery.of(context).size.height * 0.4,
+                  titleText: 'Laptop',
+                  idProductType: '6',
+                ),
+        ),
       ],
     );
   }

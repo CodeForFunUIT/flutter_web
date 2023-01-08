@@ -162,9 +162,12 @@ class CustomDialog extends StatelessWidget {
   }
 
   Widget addOrderSuccess() {
+    String date =
+        '${DateTime.now().add(const Duration(days: 2)).day}/${DateTime.now().add(const Duration(days: 2)).month}/${DateTime.now().add(const Duration(days: 2)).year}';
     return dialog(
       title: 'Thành công',
-      content: 'Đơn hàng của bạn đã xác tiếp nhận',
+      content:
+          "Đơn hàng của bạn đã tiếp nhận \n quý khách vui lòng đến trước ngày $date để thanh toán",
       button: ElevatedButton(
         onPressed: () => Get.offAllNamed(rootRoute),
         child: const Padding(
@@ -208,10 +211,12 @@ class CustomDialog extends StatelessWidget {
           CustomText(
             text: title,
             weight: FontWeight.bold,
+            size: 20,
           ),
           const SizedBox(height: 24),
           CustomText(
             text: content,
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
           button,

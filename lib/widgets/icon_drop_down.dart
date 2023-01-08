@@ -121,7 +121,7 @@ class MenuItems {
         Get.offAll(const AllProductScreen(title: 'RAM', idProductType: '2'));
         break;
       case MenuItems.laptop:
-        //Do something
+        Get.offAll(const AllProductScreen(title: 'Laptop', idProductType: '6'));
         break;
       case MenuItems.logout:
         authController.logout();

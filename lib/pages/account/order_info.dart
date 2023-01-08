@@ -31,19 +31,43 @@ class OrderInfor extends StatelessWidget {
                 weight: FontWeight.bold,
               ),
               CustomText(
-                text: "Trạng thái chờ xử lý",
+                text: "Trạng thái Đơn hàng",
                 weight: FontWeight.bold,
               ),
             ],
           )
         : Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              const SizedBox(width: 76),
               CustomText(text: order.id),
+              const SizedBox(width: 88),
               CustomText(text: order.date),
+              const SizedBox(width: 40),
               CustomText(text: double.parse(order.price!).toVND()),
-              CustomText(text: order.status),
+              const SizedBox(width: 50),
+              Flexible(
+                child: CustomText(
+                  text: status(order.status!),
+                  textAlign: TextAlign.center,
+                ),
+              ),
             ],
           );
+  }
+
+  String status(String status) {
+    switch (status) {
+      case 'outDate':
+        return 'Đơn hàng quá hạn';
+      case 'pending':
+        return 'Đơn hàng đang xử lý';
+      case 'approve':
+        return 'Đơn hàng được chấp nhận';
+      case 'decline':
+        return 'Đơn hàng bị từ chối';
+
+      default:
+        return '';
+    }
   }
 }
