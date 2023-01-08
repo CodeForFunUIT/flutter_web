@@ -1,7 +1,15 @@
 # flutter_web_electronic_components
 
-## Overview
-name's project is "management electronic device" is developed by team 3 in university UIT with course "analysis and design of information systems"  
+## PROJECT
+```bash
+name: management electronic device
+team: 3
+course: analysis and design of information systems
+school: university information of technology
+FE: flutter
+BE: php
+DB: mySql
+```
 
 ## MSSV
 ```bash
