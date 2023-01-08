@@ -1,16 +1,32 @@
 # flutter_web_electronic_components
 
-A new Flutter project.
+## Overview
+name's project is "management electronic device" is developed by team 3 in university UIT with course "analysis and design of information systems"  
+
+## MSSV
+```bash
+19521902 - Trần Hiếu Nghĩa
+19521628 - Nguyễn Văn Nhật Huy
+19521951 - Hoàng Văn Tiến Nhật
+20521622 - Lâm Trà My 			  
+```
+## install
+```bash
+flutter v3.3.7
+```
 
 ## Getting Started
+clone project
+```shell
+git clone 
+```
 
-This project is a starting point for a Flutter application.
+run project: 
+```shell
+flutter run -d chrome
+```
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
