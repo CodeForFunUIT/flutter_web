@@ -4,7 +4,7 @@
 ```bash
 School: university information of technology
 Course: analysis and design of information systems
-Name project: management electronic device (for admin)
+Name project: management electronic device (for user)
 Develop by team 3
 FE: flutter
 BE: php
