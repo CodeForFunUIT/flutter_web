@@ -18,7 +18,7 @@ flutter v3.3.7
 ## Getting Started
 clone project
 ```shell
-git clone 
+git clone https://github.com/CodeForFunUIT/flutter_web.git
 ```
 
 run project: 
