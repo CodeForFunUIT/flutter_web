@@ -2,10 +2,10 @@
 
 ## PROJECT
 ```bash
-name: management electronic device
-team: 3
-course: analysis and design of information systems
-school: university information of technology
+School: university information of technology
+Course: analysis and design of information systems
+Name project: management electronic device (for admin)
+Develop by team 3
 FE: flutter
 BE: php
 DB: mySql
@@ -18,7 +18,7 @@ DB: mySql
 19521951 - Hoàng Văn Tiến Nhật
 20521622 - Lâm Trà My 			  
 ```
-## install
+## REQUIRE
 ```bash
 flutter v3.3.7
 ```
