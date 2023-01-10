@@ -1,66 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_electronic_components/base/enum.dart';
 import 'package:flutter_web_electronic_components/constants/color.dart';
 import 'package:flutter_web_electronic_components/constants/controllers.dart';
 import 'package:flutter_web_electronic_components/controllers/auth_controller.dart';
 import 'package:flutter_web_electronic_components/controllers/navigator_controller.dart';
-import 'package:flutter_web_electronic_components/models/cart.dart';
+import 'package:flutter_web_electronic_components/models/user.dart';
 import 'package:flutter_web_electronic_components/widgets/app_bar.dart';
-import 'package:flutter_web_electronic_components/widgets/custom_dialog.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_text.dart';
 import 'package:flutter_web_electronic_components/widgets/footer.dart';
 import 'package:flutter_web_electronic_components/widgets/loading.dart';
 import 'package:get/get.dart';
 
-class Login extends StatefulWidget {
-  final FromWhere fromWhere;
-  final List<CartDetail?> carts;
-  const Login({
-    super.key,
-    this.fromWhere = FromWhere.fromLoginNormal,
-    this.carts = const [],
-  });
+class ChangePassword extends StatefulWidget {
+  const ChangePassword({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<ChangePassword> createState() => _ChangePasswordState();
 }
 
-class _LoginState extends State<Login> {
-  late TextEditingController email;
+class _ChangePasswordState extends State<ChangePassword> {
   late TextEditingController password;
+  late TextEditingController rePassword;
   final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    email = TextEditingController();
+    rePassword = TextEditingController();
     password = TextEditingController();
   }
 
-  Future<void> login() async {
+  Future<void> changePassword() async {
     if (_formKey.currentState!.validate()) {
-      Loading.startLoading(context);
-      await authController.login(
-        email: email.text,
+      final user = User(
+        id: authController.user!.id,
+        firstName: authController.user!.firstName,
+        lastName: authController.user!.lastName,
+        sex: authController.user?.sex ?? '',
+        email: authController.user!.email,
         password: password.text,
+        dateOfBirth: authController.user!.dateOfBirth,
+        phone: authController.user!.phone,
       );
-      // if (authController.user != null) {
-      //   await cartController.getCart(idUser: authController.user?.id);
-      // }
+      Loading.startLoading(context);
+      await authController.changePassword(user: user);
       Loading.stopLoading();
-      if (authController.user == null) {
-        Get.dialog(const CustomDialog(type: DialogType.loginFail));
-      } else {
-        switch (widget.fromWhere) {
-          case FromWhere.fromLoginNormal:
-            Get.back();
-            break;
-          case FromWhere.fromBuyProduct:
-            Get.toNamed(paymentPage);
-            break;
-          default:
-        }
-      }
+      Get.offAllNamed(rootRoute);
     } else {
       print('error');
     }
@@ -68,7 +52,7 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
-    email.dispose();
+    rePassword.dispose();
     password.dispose();
     super.dispose();
   }
@@ -81,13 +65,14 @@ class _LoginState extends State<Login> {
     return null;
   }
 
-  String? validateEmail(String? value) {
-    final emailValid = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-    );
-    if (value == null || value.isEmpty || !emailValid.hasMatch(value)) {
-      return 'email Không hợp lệ';
+  String? checkRePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Không được bỏ trống';
     }
+    if (value != password.text) {
+      return 'mật khẩu không trùng khớp';
+    }
+
     return null;
   }
 
@@ -112,7 +97,7 @@ class _LoginState extends State<Login> {
                       child: Column(
                         children: [
                           const CustomText(
-                            text: 'Đăng nhập',
+                            text: 'Đổi mật khẩu',
                             weight: FontWeight.bold,
                           ),
                           const SizedBox(height: 16),
@@ -124,45 +109,57 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           const SizedBox(height: 24),
-                          TextFormField(
-                            controller: email,
-                            decoration: InputDecoration(
-                              hintText: 'Nhập email',
-                              labelText: 'Email',
-                              fillColor: Colors.grey[300],
-                              border: const OutlineInputBorder(),
-                            ),
-                            validator: (value) {
-                              if (validateEmpty(value) != null) {
-                                return validateEmpty(value);
-                              }
-                              return validateEmail(value);
-                            },
-                          ),
-                          const SizedBox(height: 24),
                           GetBuilder<AuthController>(
                             builder: (controller) => TextFormField(
                               controller: password,
-                              obscureText: !controller.passwordVisiblelogin,
+                              obscureText:
+                                  !controller.passwordVisiblechangePass,
                               decoration: InputDecoration(
-                                hintText: 'Nhập mật khẩu',
-                                labelText: 'password',
-                                fillColor: Colors.grey,
+                                hintText: 'Nhập mật khẩu mới',
+                                labelText: 'Mật khẩu mới',
+                                fillColor: Colors.grey[300],
                                 border: const OutlineInputBorder(),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    controller.passwordVisiblelogin
+                                    controller.passwordVisiblechangePass
                                         ? Icons.visibility
                                         : Icons.visibility_off,
                                     color: Theme.of(context).primaryColorDark,
                                   ),
                                   onPressed: () {
-                                    controller.passwordVisiblelogin =
-                                        !controller.passwordVisiblelogin;
+                                    controller.passwordVisiblechangePass =
+                                        !controller.passwordVisiblechangePass;
                                   },
                                 ),
                               ),
                               validator: validateEmpty,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          GetBuilder<AuthController>(
+                            builder: (controller) => TextFormField(
+                              controller: rePassword,
+                              obscureText:
+                                  !controller.passwordVisibleReChangePass,
+                              decoration: InputDecoration(
+                                hintText: 'Nhập lại mật khẩu mới',
+                                labelText: 'Nhập lại mật khẩu mới',
+                                fillColor: Colors.grey,
+                                border: const OutlineInputBorder(),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    controller.passwordVisibleReChangePass
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Theme.of(context).primaryColorDark,
+                                  ),
+                                  onPressed: () {
+                                    controller.passwordVisibleReChangePass =
+                                        !controller.passwordVisibleReChangePass;
+                                  },
+                                ),
+                              ),
+                              validator: checkRePassword,
                             ),
                           ),
                           const SizedBox(height: 24),
@@ -178,9 +175,9 @@ class _LoginState extends State<Login> {
                                   side:
                                       const BorderSide(style: BorderStyle.none),
                                 ),
-                                onPressed: login,
+                                onPressed: changePassword,
                                 child: const CustomText(
-                                  text: 'Đăng nhập',
+                                  text: 'Đổi mật khẩu',
                                   weight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
@@ -188,9 +185,10 @@ class _LoginState extends State<Login> {
                               const SizedBox(width: 24),
                               InkWell(
                                 onTap: () {
-                                  Get.toNamed(registerPage);
+                                  Get.toNamed(rootRoute);
                                 },
-                                child: CustomText(text: 'Đăng ký', color: blue),
+                                child:
+                                    CustomText(text: 'Trang chủ', color: blue),
                               ),
                             ],
                           )

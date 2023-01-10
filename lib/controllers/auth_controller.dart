@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_web_electronic_components/constants/link.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -14,6 +15,45 @@ class AuthController extends GetxController {
     update();
   }
 
+  bool _passwordVisible = false;
+  bool get passwordVisible => _passwordVisible;
+  set passwordVisible(bool data) {
+    _passwordVisible = data;
+    update();
+  }
+
+  bool _passwordVisiblelogin = false;
+  bool get passwordVisiblelogin => _passwordVisiblelogin;
+  set passwordVisiblelogin(bool data) {
+    _passwordVisiblelogin = data;
+    update();
+  }
+
+  bool _passwordVisiblechangePass = false;
+  bool get passwordVisiblechangePass => _passwordVisiblechangePass;
+  set passwordVisiblechangePass(bool data) {
+    _passwordVisiblechangePass = data;
+    update();
+  }
+
+  bool _passwordVisibleReChangePass = false;
+  bool get passwordVisibleReChangePass => _passwordVisibleReChangePass;
+  set passwordVisibleReChangePass(bool data) {
+    _passwordVisibleReChangePass = data;
+    update();
+  }
+
+  TextEditingController _dateOfBirth = TextEditingController();
+  TextEditingController get dateOfBirth => _dateOfBirth;
+  set dateOfBirth(TextEditingController data) {
+    _dateOfBirth = data;
+    update();
+  }
+
+  clear() {
+    _dateOfBirth.dispose();
+  }
+
   Future<void> login({String? email, String? password}) async {
     final body = jsonEncode({
       'email': email,
@@ -22,6 +62,25 @@ class AuthController extends GetxController {
     try {
       http.Response res = await http.post(
         Uri.parse(Domain.login),
+        body: body,
+      );
+
+      if (res.statusCode == 200) {
+        user = User.fromJson(jsonDecode(res.body));
+      } else {
+        print('email exist');
+      }
+    } catch (e) {
+      printError(info: e.toString());
+    }
+  }
+
+  Future<void> changePassword({User? user}) async {
+    final body = jsonEncode(user!.toJson(user));
+    print(body);
+    try {
+      http.Response res = await http.post(
+        Uri.parse(Domain.changePassword),
         body: body,
       );
 

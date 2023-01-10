@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_electronic_components/constants/color.dart';
 import 'package:flutter_web_electronic_components/constants/controllers.dart';
+import 'package:flutter_web_electronic_components/controllers/auth_controller.dart';
 import 'package:flutter_web_electronic_components/controllers/navigator_controller.dart';
 import 'package:flutter_web_electronic_components/models/user.dart';
 import 'package:flutter_web_electronic_components/pages/auth/radio_button.dart';
@@ -20,21 +21,17 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   late TextEditingController firstName;
   late TextEditingController lastName;
-  late TextEditingController dateOfBirth;
   late TextEditingController email;
   late TextEditingController password;
   late TextEditingController sdt;
 
   final _formKey = GlobalKey<FormState>();
-  // final _formKey = GlobalKey<FormState>();
-  // final _formKey = GlobalKey<FormState>();
-  // final _formKey = GlobalKey<FormState>();
-  // final _formKey = GlobalKey<FormState>();
 
   late User user;
   @override
   void initState() {
     user = User.init();
+
     super.initState();
     initController();
   }
@@ -44,16 +41,33 @@ class _RegisterState extends State<Register> {
     lastName = TextEditingController();
     password = TextEditingController();
     email = TextEditingController();
-    dateOfBirth = TextEditingController();
     sdt = TextEditingController();
+  }
+
+  DateTime selectedDate = DateTime.now();
+
+  void _selectDate(
+    BuildContext context, {
+    required AuthController controller,
+  }) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != selectedDate) {
+      controller.dateOfBirth.text =
+          "${picked.day}/${picked.month}/${picked.year}";
+    }
   }
 
   void disposeController() {
     firstName.dispose();
     lastName.dispose();
-    dateOfBirth.dispose();
     email.dispose();
     password.dispose();
+    authController.clear();
   }
 
   @override
@@ -160,15 +174,22 @@ class _RegisterState extends State<Register> {
                   },
                 ),
                 const SizedBox(height: 24),
-                TextFormField(
-                  controller: dateOfBirth,
-                  decoration: const InputDecoration(
-                    hintText: 'Ngày sinh của bạn',
-                    labelText: 'dd/mm/yyyy',
-                    fillColor: Colors.grey,
-                    border: OutlineInputBorder(),
+                GetBuilder<AuthController>(
+                  builder: (controller) => TextFormField(
+                    controller: controller.dateOfBirth,
+                    decoration: InputDecoration(
+                      hintText: 'Ngày sinh của bạn',
+                      labelText: 'dd/mm/yyyy',
+                      fillColor: Colors.grey,
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        onPressed: () =>
+                            _selectDate(context, controller: controller),
+                        icon: const Icon(Icons.date_range),
+                      ),
+                    ),
+                    validator: validateEmpty,
                   ),
-                  validator: validateEmpty,
                 ),
                 const SizedBox(height: 24),
                 TextFormField(
@@ -182,15 +203,30 @@ class _RegisterState extends State<Register> {
                   validator: validateEmail,
                 ),
                 const SizedBox(height: 24),
-                TextFormField(
-                  controller: password,
-                  decoration: const InputDecoration(
-                    hintText: 'Nhập mật khẩu',
-                    labelText: 'Mật khẩu',
-                    fillColor: Colors.grey,
-                    border: OutlineInputBorder(),
+                GetBuilder<AuthController>(
+                  builder: (controller) => TextFormField(
+                    controller: password,
+                    obscureText: !controller.passwordVisible,
+                    decoration: InputDecoration(
+                      hintText: 'Nhập mật khẩu',
+                      labelText: 'Mật khẩu',
+                      fillColor: Colors.grey,
+                      border: const OutlineInputBorder(),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          controller.passwordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Theme.of(context).primaryColorDark,
+                        ),
+                        onPressed: () {
+                          controller.passwordVisible =
+                              !controller.passwordVisible;
+                        },
+                      ),
+                    ),
+                    validator: validateEmpty,
                   ),
-                  validator: validateEmpty,
                 ),
                 const SizedBox(height: 24),
                 TextFormField(
@@ -222,13 +258,12 @@ class _RegisterState extends State<Register> {
                             email: email.text,
                             sex: user.sex,
                             password: password.text,
-                            dateOfBirth: dateOfBirth.text,
+                            dateOfBirth: authController.dateOfBirth.text,
                             phone: sdt.text,
                           );
                           Loading.startLoading(context);
                           await authController.register(user: user);
                           Loading.stopLoading();
-                          print(authController.user?.id);
                           if (authController.user?.id == null) {
                             Get.snackbar(
                               'Đăng ký thất bại',

@@ -72,7 +72,6 @@ class _ImageSliderState extends State<ImageSlider> {
               padding: widget.padding ?? const EdgeInsets.only(bottom: 20),
               child: Indicator(
                 key: _childKey,
-                controller: controller,
                 itemCount: widget.images.length,
                 initIndex: widget.initIndex,
                 indicatorColor: widget.indicatorColor,
@@ -145,12 +144,10 @@ class Indicator extends StatefulWidget {
   const Indicator({
     super.key,
     required this.itemCount,
-    required this.controller,
     this.indicatorColor,
     this.initIndex = 0,
   });
 
-  final CarouselController controller;
   final int itemCount;
   final int initIndex;
   final Color? indicatorColor;
@@ -160,7 +157,6 @@ class Indicator extends StatefulWidget {
 }
 
 class IndicatorState extends State<Indicator> {
-  late CarouselController controller;
   int get itemCount => widget.itemCount;
   late int _select;
   late Color _indicatorColor;
@@ -168,15 +164,8 @@ class IndicatorState extends State<Indicator> {
   @override
   void initState() {
     super.initState();
-    controller = widget.controller;
     _select = widget.initIndex;
     _indicatorColor = widget.indicatorColor!;
-  }
-
-  @override
-  void dispose() {
-    controller.stopAutoPlay();
-    super.dispose();
   }
 
   @override
@@ -195,21 +184,15 @@ class IndicatorState extends State<Indicator> {
 
   Widget _indicator(int index) {
     bool isSelect = index == _select;
-    return GestureDetector(
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        margin: const EdgeInsets.symmetric(horizontal: 3.0),
-        height: 8,
-        width: isSelect ? 32 : 8,
-        decoration: BoxDecoration(
-          color: _indicatorColor,
-          borderRadius: BorderRadius.circular(10),
-        ),
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 150),
+      margin: const EdgeInsets.symmetric(horizontal: 3.0),
+      height: 8,
+      width: isSelect ? 32 : 8,
+      decoration: BoxDecoration(
+        color: _indicatorColor,
+        borderRadius: BorderRadius.circular(10),
       ),
-      onTap: () {
-        controller.animateToPage(index);
-        change(index);
-      },
     );
   }
 

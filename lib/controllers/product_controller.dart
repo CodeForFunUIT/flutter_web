@@ -35,6 +35,14 @@ class ProductController extends GetxController {
     update();
   }
 
+  List<Product> _allProducts = [];
+  List<Product> get allProducts => _allProducts;
+  set allProducts(List<Product> data) {
+    _allProducts.clear();
+    _allProducts = [...data];
+    update();
+  }
+
   List<Banner> _banners = [];
   List<Banner> get banners => _banners;
   set banners(List<Banner> data) {
@@ -57,37 +65,49 @@ class ProductController extends GetxController {
       "idProductType": idProductType,
     });
     try {
-      http.Response res = await http.post(
-        Uri.parse(Domain.getProduct),
-        body: body,
-      );
-
-      if (res.statusCode == 200) {
-        switch (idProductType) {
-          case '1':
-            cpus = (jsonDecode(res.body) as List)
-                .map(
-                  (item) => Product.fromJson(item),
-                )
-                .toList();
-            break;
-          case '2':
-            products = (jsonDecode(res.body) as List)
-                .map(
-                  (item) => Product.fromJson(item),
-                )
-                .toList();
-            break;
-          case '6':
-          laptops = (jsonDecode(res.body) as List)
-                .map(
-                  (item) => Product.fromJson(item),
-                )
-                .toList();
-            break;
-          default:
+      if (idProductType == null) {
+        http.Response res = await http.post(
+          Uri.parse(Domain.getProduct),
+        );
+        if (res.statusCode == 200) {
+          allProducts = (jsonDecode(res.body) as List)
+              .map(
+                (item) => Product.fromJson(item),
+              )
+              .toList();
         }
-      } else {}
+      } else {
+        http.Response res = await http.post(
+          Uri.parse(Domain.getProduct),
+          body: body,
+        );
+        if (res.statusCode == 200) {
+          switch (idProductType) {
+            case '1':
+              cpus = (jsonDecode(res.body) as List)
+                  .map(
+                    (item) => Product.fromJson(item),
+                  )
+                  .toList();
+              break;
+            case '2':
+              products = (jsonDecode(res.body) as List)
+                  .map(
+                    (item) => Product.fromJson(item),
+                  )
+                  .toList();
+              break;
+            case '6':
+              laptops = (jsonDecode(res.body) as List)
+                  .map(
+                    (item) => Product.fromJson(item),
+                  )
+                  .toList();
+              break;
+            default:
+          }
+        } else {}
+      }
     } catch (e) {
       printError(info: e.toString());
     }

@@ -7,6 +7,7 @@ import 'package:flutter_web_electronic_components/controllers/product_controller
 import 'package:flutter_web_electronic_components/layout.dart';
 import 'package:flutter_web_electronic_components/pages/404/page_not_found.dart';
 import 'package:flutter_web_electronic_components/pages/account/my_order.dart';
+import 'package:flutter_web_electronic_components/pages/auth/change_password.dart';
 import 'package:flutter_web_electronic_components/pages/auth/login.dart';
 import 'package:flutter_web_electronic_components/pages/auth/register.dart';
 import 'package:flutter_web_electronic_components/pages/cart/cart_page.dart';
@@ -68,13 +69,10 @@ class MyApp extends StatelessWidget {
           name: orderPage,
           page: () => const MyOrder(),
         ),
-        // GetPage(
-        //   name: allProductScreen,
-        //   page: () => const AllProductScreen(
-        //     title: headline6,
-        //     idProductType: idProductType,
-        //   ),
-        // )
+        GetPage(
+          name: changePasswordPage,
+          page: () => const ChangePassword(),
+        )
       ],
       // onGenerateRoute: ,
       debugShowCheckedModeBanner: false,

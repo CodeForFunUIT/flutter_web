@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:flutter_web_electronic_components/constants/color.dart';
 import 'package:flutter_web_electronic_components/constants/controllers.dart';
 import 'package:flutter_web_electronic_components/controllers/auth_controller.dart';
 import 'package:flutter_web_electronic_components/controllers/cart_controller.dart';
 import 'package:flutter_web_electronic_components/controllers/navigator_controller.dart';
+import 'package:flutter_web_electronic_components/controllers/product_controller.dart';
 import 'package:flutter_web_electronic_components/models/product.dart';
+import 'package:flutter_web_electronic_components/pages/detail/detail_page.dart';
 import 'package:flutter_web_electronic_components/widgets/custom_text.dart';
 import 'package:flutter_web_electronic_components/widgets/icon_drop_down.dart';
 import 'package:get/get.dart';
-import 'package:image_network/image_network.dart';
+import 'package:shimmer/shimmer.dart';
 
 class CustomAppBar extends AppBar {
   CustomAppBar({
@@ -44,58 +47,62 @@ class TitleAppBar extends StatelessWidget {
         Expanded(
           child: Container(
             color: Colors.white,
-            child: TypeAheadField<Product>(
-              hideSuggestionsOnKeyboardHide: true,
-              keepSuggestionsOnLoading: false,
-              textFieldConfiguration: const TextFieldConfiguration(
-                decoration: InputDecoration(
-                  suffixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(),
-                  hintText: 'Tìm kiếm sản phẩm...',
-                ),
-              ),
-              suggestionsCallback: (string) async {
-                List<Product> list = [
-                  Product(
-                    name: 'a',
-                    price: '10',
-                    image:
-                        'https://tmpfluttermysql.000webhostapp.com/image/ram/Ram%20Crucial%20DDR5%208GB%20Bus%204800MHz%20CL40%20CT8G48C40S5.jpg',
-                  ),
-                  Product(
-                    name: 'b',
-                    price: '10',
-                    image:
-                        'https://tmpfluttermysql.000webhostapp.com/image/ram/Ram%20Crucial%20DDR5%208GB%20Bus%204800MHz%20CL40%20CT8G48C40S5.jpg',
-                  )
-                ];
-                list = list
-                    .where((e) => e.name?.contains(string) ?? false)
-                    .toList();
-                return list;
-              },
-              itemBuilder: (context, product) {
-                return ListTile(
-                  title: Text(product.name ?? ''),
-                  subtitle: Text(
-                    '${product.price} đ',
-                  ),
-                  trailing: SizedBox(
-                    height: 50,
-                    width: 50,
-                    child: ImageNetwork(
-                      image: product.image ?? '',
-                      height: 50,
-                      width: 50,
-                      fitWeb: BoxFitWeb.fill,
+            child: GetBuilder<ProductController>(
+              initState: (_) => productController.getProduct(),
+              builder: (controller) => controller.allProducts.isEmpty
+                  ? Shimmer.fromColors(
+                      baseColor: baseShimmerColor,
+                      highlightColor: highlightShimmerColor,
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        height: 20,
+                      ),
+                    )
+                  : TypeAheadField<Product>(
+                      hideSuggestionsOnKeyboardHide: true,
+                      keepSuggestionsOnLoading: false,
+                      textFieldConfiguration: const TextFieldConfiguration(
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(Icons.search),
+                          border: OutlineInputBorder(),
+                          hintText: 'Tìm kiếm sản phẩm...',
+                        ),
+                      ),
+                      suggestionsCallback: (string) async {
+                        List<Product> list = controller.allProducts
+                            .where(
+                              (e) =>
+                                  e.name?.toLowerCase().contains(string) ??
+                                  false,
+                            )
+                            .toList();
+                        return list;
+                      },
+                      itemBuilder: (context, product) {
+                        return ListTile(
+                          title: Text(product.name ?? ''),
+                          subtitle: Text(
+                            '${product.price} đ',
+                          ),
+                          trailing: SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: Image.network(
+                              product.image ?? '',
+                              height: 50,
+                              width: 50,
+                            ),
+                          ),
+                        );
+                      },
+                      onSuggestionSelected: (product) {
+                        Get.to(() => DetailPage(product: product));
+                      },
                     ),
-                  ),
-                );
-              },
-              onSuggestionSelected: (product) {},
             ),
           ),
         ),
+        const SizedBox(width: 16),
         verticalDivider(),
         Padding(
           padding: const EdgeInsets.all(8.0),

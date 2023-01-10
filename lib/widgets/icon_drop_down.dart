@@ -85,13 +85,15 @@ class Item {
 
 class MenuItems {
   static const List<Item> menuItems = [cpu, laptop, ram];
-  static const List<Item> account = [logout, order];
+  static const List<Item> account = [logout, order, changePassword];
 
   static const cpu = Item(text: 'Cpu', icon: Icons.memory);
   static const laptop = Item(text: 'Laptop', icon: Icons.laptop);
   static const ram = Item(text: 'Rams', icon: Icons.settings);
   static const logout = Item(text: 'Đăng xuất', icon: Icons.logout);
   static const order = Item(text: 'Đơn hàng', icon: Icons.shopping_cart);
+  static const changePassword =
+      Item(text: 'Đổi mật khẩu', icon: Icons.password_outlined);
 
   static Widget buildItem(Item item) {
     return Row(
@@ -129,6 +131,9 @@ class MenuItems {
         break;
       case MenuItems.order:
         Get.toNamed(orderPage);
+        break;
+      case MenuItems.changePassword:
+        Get.toNamed(changePasswordPage);
         break;
     }
   }

@@ -62,7 +62,7 @@ const cartPage = "/cartPage";
 const paymentPage = '/paymentPage';
 const orderPage = "/orderPage";
 const allProductScreen = "/allProductScreen";
-
+const changePasswordPage = "/changePasswordPage";
 PageRoute _getPageRoute(Widget child) {
   return MaterialPageRoute(builder: (context) => child);
 }

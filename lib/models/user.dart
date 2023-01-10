@@ -53,7 +53,7 @@ class User {
       );
 
   Map<String, dynamic> toJson(User user) => {
-        // "id": user.id,
+        "id": int.parse(user.id!),
         "firstName": user.firstName,
         "lastName": user.lastName,
         "sex": user.sex ?? "male",
